@@ -1,24 +1,53 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <AddItem @upload-image="onSaveImage" @image-changed="setCurrentImage" />
+   <p v-if="error">{{error.message}}</p>
+   <p v-if="resultData.image">{{resultData}}</p>
+   <p v-if="progress">{{progress.value}}</p>
+    <MainPage />
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+/* eslint no-console: off */
+import MainPage from "./components/MainPage.vue";
+import AddItem from "./components/AddItem";
+
+import useFirebaseFileUpload from "./hooks/firebase-file-upload";
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
-    HelloWorld
+    MainPage,
+    AddItem
+  },
+  setup() {
+    let state = useFirebaseFileUpload();
+    return {
+      ...state,
+      uploadData : state.uploadData
+    };
+  },
+  methods: {
+    setCurrentImage(_image) {
+      console.log(_image);
+      this.fileData = _image;
+      this.error = {};
+      this.resultData = {};
+    },
+    onSaveImage(_image) {
+      console.log("Save Image");
+      console.log(this.fileData);
+      this.uploadData(this.fileData);
+      
+    }
   }
-}
+};
 </script>
 
 <style>
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
