@@ -1,6 +1,6 @@
 # simple-file-upload-hook-vue
 
-# firebase configuration
+## firebase configuration
 you will need to create a `src/.env.firebase.local` and put your own project information for firebase. The file is structured similar to this:
 ```javascript
 export default {
